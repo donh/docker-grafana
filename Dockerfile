@@ -21,7 +21,7 @@ RUN \
   grunt && \
   go get ./... && \
   go build && \
-  (find $GOROOT -name ".git" | xargs rm -fR)
+  (find $GOPATH -name ".git" | xargs rm -fR)
 
 COPY run.sh /run.sh
 
