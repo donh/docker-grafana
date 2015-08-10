@@ -2,8 +2,9 @@ FROM golang:1.4.2
 
 MAINTAINER Don Hsieh <don@cepave.com>
 
-ENV GRAFANA_DIR=/go/src/grafana
+ENV GRAFANA_DIR=/go/src/github.com/Cepave/grafana
 
+# Install Grafana
 RUN \
   apt-get update && \
   apt-get -y install nodejs npm && \
@@ -19,7 +20,8 @@ RUN \
   npm i && \
   grunt && \
   go get ./... && \
-  go build
+  go build && \
+  (find $GOROOT -name ".git" | xargs rm -fR)
 
 COPY run.sh /run.sh
 
