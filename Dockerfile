@@ -9,24 +9,22 @@ RUN \
   apt-get update && \
   apt-get -y install nodejs npm && \
   ln -s /usr/bin/nodejs /usr/bin/node && \
-  git clone https://github.com/Cepave/grafana.git $GRAFANA_DIR
+  go get github.com/Cepave/grafana
 
 WORKDIR $GRAFANA_DIR
 
 RUN \
   npm config set registry="http://registry.npmjs.org/" && \
   npm install -g grunt-cli && \
-  npm i express request body-parser && \
   npm i && \
-  grunt && \
-  go get ./... && \
-  go build && \
-  (find $GOPATH -name ".git" | xargs rm -fR)
+  grunt build && \
+  go build .
 
 COPY run.sh /run.sh
+COPY cfg.json $GRAFANA_DIR/cfg.json
 
 # Port
 EXPOSE 3000 4001
 
 # Start
-CMD /run.sh
+CMD ["/run.sh"]
